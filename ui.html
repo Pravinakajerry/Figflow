@@ -1,146 +1,148 @@
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    .ff-main {
-      grid-column-gap: 24px;
-      grid-row-gap: 24px;
-      color: #000;
-      background-color: #eae7db;
-      flex-flow: column;
-      width: 100%;
-      height: 100%;
-      padding: 16px;
-      font-family: "Ig Sans 400", sans-serif;
-      font-size: 14px;
-      display: flex;
-      box-sizing: border-box;
-    }
-    .title, .color-wp {
-      justify-content: space-between;
-      align-items: center;
-      display: flex;
-    }
-    .color {
-      border-radius: 100%;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-    }
-    .color.is-010101 { background-color: #010101; }
-    .color.is-f79722 { background-color: #f79722; }
-    .color.is-49ff86 { background-color: #49ff86; }
-    .color.is-8a38f5 { background-color: #8a38f5; }
-    .color.is-0c8ce9 { background-color: #0c8ce9; }
-    .color.is-fffff { background-color: #ffffff; border: 1px solid #000; }
-    .connect-button {
-      color: #fff;
-      cursor: pointer;
-      background-color: #000;
-      min-height: 40px;
-      padding: 4px 12px;
-      font-size: 14px;
-      width: 100%;
-      margin-top: 10px;
-    }
-    .connect-button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    .connect-wp {
-      justify-content: space-between;
-      align-items: center;
-      display: flex;
-    }
-    .nz-link {
-      color: #000;
-    }
-    .border-wp {
-      grid-column-gap: 24px;
-      grid-row-gap: 24px;
-      justify-content: space-between;
-      align-items: center;
-      display: flex;
-      margin-top: 20px;
-    }
-    .left-border-type, .right-border-type {
-      background-color: #fff;
-      justify-content: center;
-      align-items: center;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      cursor: pointer;
-    }
-    .line-border-type {
-      background-color: #fff;
-      flex: 1;
-      justify-content: center;
-      align-items: center;
-      height: 48px;
-      display: flex;
-      cursor: pointer;
-    }
-    .border-type-preview {
-      width: 100%;
-      max-width: 80%;
-      height: 2px;
-    }
+<style>
+  @font-face {
+    font-family: 'Ig Sans 400';
+    src: url('https://uploads-ssl.webflow.com/66bba892e203a169caa572e1/66bbaca45fcd3d14ea385802_ig-sans-400.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .ff-main {
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+    color: #000;
+    background-color: #eae7db;
+    flex-flow: column;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    font-family: "Ig Sans 400", sans-serif;
+    font-size: 14px;
+    display: flex;
+    box-sizing: border-box;
+  }
+  .title, .color-wp {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+  }
+  .color {
+    border-radius: 100%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+  .color.is-010101 { background-color: #010101; }
+  .color.is-f79722 { background-color: #f79722; }
+  .color.is-49ff86 { background-color: #49ff86; }
+  .color.is-8a38f5 { background-color: #8a38f5; }
+  .color.is-0c8ce9 { background-color: #0c8ce9; }
+  .color.is-fffff { background-color: #ffffff; border: 1px solid #000; }
+  .connect-button {
+    color: #fff;
+    cursor: pointer;
+    background-color: #000;
+    min-height: 40px;
+    padding: 4px 12px;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .connect-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  .connect-wp {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+  }
+  .nz-link {
+    color: #000;
+  }
+  .border-wp {
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    margin-top: 20px;
+  }
+  .left-border-type, .right-border-type {
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    cursor: pointer;
+  }
+  .line-border-type {
+    background-color: #fff;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    display: flex;
+    cursor: pointer;
+  }
+  .border-type-preview {
+    width: 100%;
+    max-width: 80%;
+    height: 2px;
+  }
+</style>
 
-    @font-face {
-      font-family: 'Ig Sans 400';
-      src: url('https://uploads-ssl.webflow.com/66bba892e203a169caa572e1/66bbaca45fcd3d14ea385802_ig-sans-400.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-
-  </style>
-  
-  <div class="ff-main">
-    <div class="title">
-      <div><a href="http://nonzero.space/?figflow" target="_blank" class="nz-link">NON&nbsp;ZERO</a>&nbsp;SUM&nbsp;GAMES ©</div>
-      <div>v0.1</div>
-    </div>
-    <div class="color-wp">
-      <div class="color is-010101" data-color="#010101"></div>
-      <div class="color is-f79722" data-color="#f79722"></div>
-      <div class="color is-49ff86" data-color="#49ff86"></div>
-      <div class="color is-8a38f5" data-color="#8a38f5"></div>
-      <div class="color is-0c8ce9" data-color="#0c8ce9"></div>
-      <div class="color is-fffff" data-color="#ffffff"></div>
-    </div>
-    <div class="border-wp">
-      <div class="left-border-type" id="leftArrow">
-        <div class="border-svg w-embed">
-          <svg width="23" height="17" viewBox="0 0 23 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8.07921 0.819998L0.372559 8.5M0.372559 8.5L8.07921 16.18M0.372559 8.5H23" stroke="#8A38F5" stroke-width="2"></path>
-          </svg>
-        </div>
-      </div>
-      <div class="line-border-type" id="lineType">
-        <div class="border-type-preview"></div>
-      </div>
-      <div class="right-border-type" id="rightArrow">
-        <div class="border-svg w-embed">
-          <svg width="23" height="17" viewBox="0 0 23 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.9208 16.18L22.6274 8.5M22.6274 8.5L14.9208 0.820001M22.6274 8.5H0" stroke="#8A38F5" stroke-width="2"></path>
-          </svg>
-        </div>
+<div class="ff-main">
+  <div class="title">
+    <div><a href="http://nonzero.space/?figflow" target="_blank" class="nz-link">NON&nbsp;ZERO</a>&nbsp;SUM&nbsp;GAMES ©</div>
+    <div>v0.1</div>
+  </div>
+  <div class="color-wp">
+    <div class="color is-010101" data-color="#010101"></div>
+    <div class="color is-f79722" data-color="#f79722"></div>
+    <div class="color is-49ff86" data-color="#49ff86"></div>
+    <div class="color is-8a38f5" data-color="#8a38f5"></div>
+    <div class="color is-0c8ce9" data-color="#0c8ce9"></div>
+    <div class="color is-fffff" data-color="#ffffff"></div>
+  </div>
+  <div class="border-wp">
+    <div class="left-border-type" id="leftArrow">
+      <div class="border-svg w-embed">
+        <svg width="23" height="17" viewBox="0 0 23 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.07921 0.819998L0.372559 8.5M0.372559 8.5L8.07921 16.18M0.372559 8.5H23" stroke="#8A38F5" stroke-width="2"></path>
+        </svg>
       </div>
     </div>
-    <div class="connect-wp">
-      <div>SELECT&nbsp;&amp; CONNECT</div>
-      <button id="connect" class="connect-button" disabled>Connect Nodes</button>
+    <div class="line-border-type" id="lineType">
+      <div class="border-type-preview"></div>
+    </div>
+    <div class="right-border-type" id="rightArrow">
+      <div class="border-svg w-embed">
+        <svg width="23" height="17" viewBox="0 0 23 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.9208 16.18L22.6274 8.5M22.6274 8.5L14.9208 0.820001M22.6274 8.5H0" stroke="#8A38F5" stroke-width="2"></path>
+        </svg>
+      </div>
     </div>
   </div>
-  
-  <script>
+  <div class="connect-wp">
+    <div>SELECT&nbsp;&amp; CONNECT</div>
+    <button id="connect" class="connect-button" disabled>Connect Nodes</button>
+  </div>
+</div>
+
+<script>
   let selectedColor = '#010101';  // default color
   let leftArrowEnabled = true;
   let rightArrowEnabled = true;
   let isDashedLine = false;
+  let isAdvancedMode = false;
+  let buttonPressTimer;
+  let lastModeChangeTime = 0;
+  const MODE_CHANGE_DELAY = 1000; // 1 second delay
   
   function updatePreview() {
     const preview = document.querySelector('.border-type-preview');
@@ -207,14 +209,52 @@
   };
   
   const connectButton = document.getElementById('connect');
-  connectButton.onclick = () => {
-    parent.postMessage({ pluginMessage: { type: 'connect-nodes' } }, '*');
+  
+  connectButton.onmousedown = () => {
+    if (!isAdvancedMode) {
+      buttonPressTimer = setTimeout(() => {
+        enterAdvancedMode();
+      }, 1000);
+    }
   };
+  
+  connectButton.onmouseup = () => {
+    if (!isAdvancedMode) {
+      clearTimeout(buttonPressTimer);
+      if (Date.now() - lastModeChangeTime > MODE_CHANGE_DELAY) {
+        parent.postMessage({ pluginMessage: { type: 'connect-nodes' } }, '*');
+      }
+    } else {
+      if (Date.now() - lastModeChangeTime > MODE_CHANGE_DELAY) {
+        exitAdvancedMode();
+      }
+    }
+  };
+  
+  connectButton.onmouseleave = () => {
+    if (!isAdvancedMode) {
+      clearTimeout(buttonPressTimer);
+    }
+  };
+  
+  function enterAdvancedMode() {
+    isAdvancedMode = true;
+    lastModeChangeTime = Date.now();
+    connectButton.textContent = 'CONNECTING...';
+    parent.postMessage({ pluginMessage: { type: 'advanced-mode-on' } }, '*');
+  }
+  
+  function exitAdvancedMode() {
+    isAdvancedMode = false;
+    lastModeChangeTime = Date.now();
+    connectButton.textContent = 'Connect Nodes';
+    parent.postMessage({ pluginMessage: { type: 'advanced-mode-off' } }, '*');
+  }
   
   onmessage = (event) => {
     const msg = event.data.pluginMessage;
     if (msg.type === 'selectionChanged') {
-      connectButton.disabled = msg.count !== 2;
+      connectButton.disabled = msg.count !== 2 && !isAdvancedMode;
     }
   };
   

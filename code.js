@@ -4,8 +4,9 @@ let selectedNodes = [];
 let leftArrowEnabled = true;
 let rightArrowEnabled = true;
 let isDashedLine = false;
+let isAdvancedMode = false;
 
-figma.showUI(__html__, { width: 420, height: 310 });
+figma.showUI(__html__, { width: 420, height: 280 });
 
 function findConnectorOnPage() {
   return figma.currentPage.findOne(node => node.type === "CONNECTOR");
@@ -25,7 +26,7 @@ function wrapInFrame(element) {
   return frame;
 }
 
-function createConnector(startElement, endElement) {
+function createConnector(element1, element2) {
   if (!connectorTemplate) {
     connectorTemplate = findConnectorOnPage();
     if (!connectorTemplate) {
@@ -33,6 +34,9 @@ function createConnector(startElement, endElement) {
       return;
     }
   }
+
+  let startElement = element1;
+  let endElement = element2;
 
   if (startElement.type !== "FRAME") {
     startElement = wrapInFrame(startElement);
@@ -75,6 +79,10 @@ function createConnector(startElement, endElement) {
 
 figma.on('selectionchange', () => {
   selectedNodes = figma.currentPage.selection;
+  if (isAdvancedMode && selectedNodes.length === 2) {
+    createConnector(selectedNodes[0], selectedNodes[1]);
+    selectedNodes = [];
+  }
   figma.ui.postMessage({
     type: 'selectionChanged',
     count: selectedNodes.length
@@ -93,5 +101,11 @@ figma.ui.onmessage = msg => {
     } else {
       figma.notify("Please select exactly two elements to connect.");
     }
+  } else if (msg.type === 'advanced-mode-on') {
+    isAdvancedMode = true;
+    figma.notify("Advanced mode activated. Select elements to connect.");
+  } else if (msg.type === 'advanced-mode-off') {
+    isAdvancedMode = false;
+    figma.notify("Advanced mode deactivated.");
   }
 };
