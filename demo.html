@@ -1,0 +1,123 @@
+<style>
+    /* Main wrapper styles */
+.main-wrapper {
+width: 320px;
+background-color: #EAE7DB;
+padding: 20px;
+font-family: Arial, sans-serif;
+}
+
+/* Title styles */
+.title {
+font-size: 14px;
+font-weight: bold;
+margin: 0;
+}
+
+.version {
+font-size: 12px;
+margin-top: 5px;
+}
+
+/* Color preset styles */
+.color-presets {
+display: flex;
+justify-content: space-between;
+margin: 20px 0;
+}
+
+.color {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+}
+
+.color.black { background-color: #000; }
+.color.orange { background-color: #FFA500; }
+.color.green { background-color: #00FF00; }
+.color.purple { background-color: #800080; }
+.color.blue { background-color: #0000FF; }
+.color.white { background-color: #FFF; border: 1px solid #000; }
+
+/* Border type styles */
+.border-types {
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.border-type {
+background-color: white;
+width: 30%;
+height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.border-type svg {
+width: 24px;
+height: 24px;
+}
+
+/* Footer styles */
+.footer {
+background-color: #3C3C3C;
+color: white;
+padding: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.label {
+font-size: 12px;
+}
+
+.cta {
+font-size: 14px;
+font-weight: bold;
+}
+</style>
+
+
+<div class="main-wrapper">
+    <div class="title-wrapper" style="width: 100%; margin-top: 20px; display: flex; flex-direction: row; justify-content: space-between;">
+        <h1 class="title">NON ZERO SUM GAMES ©</h1>
+        <div class="version">v0.1</div>
+    </div>
+    
+    <div class="color-presets">
+      <div class="color black"></div>
+      <div class="color orange"></div>
+      <div class="color green"></div>
+      <div class="color purple"></div>
+      <div class="color blue"></div>
+      <div class="color white"></div>
+    </div>
+    
+    <div class="border-types">
+      <div class="border-type left" id="left-border">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <line x1="4" y1="12" x2="20" y2="12" stroke="black" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="border-type middle" id="line-border">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <line x1="2" y1="12" x2="22" y2="12" stroke="black" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="border-type right" id="right-border">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="black" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="label">TO CONNECT</div>
+      <div class="cta">SHIFT + CTRL + FN</div>
+    </div>
+  </div>
+
+ 

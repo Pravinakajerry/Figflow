@@ -1,0 +1,39 @@
+<style>
+    body { font-family: sans-serif; padding: 20px; }
+    label, select, input { display: block; width: 100%; margin-bottom: 10px; }
+    button { display: block; width: 100%; padding: 10px; margin: 10px 0; }
+  </style>
+  
+  <h2>Connector Creator</h2>
+  
+  <label for="strokeType">Stroke Type:</label>
+  <select id="strokeType">
+    <option value="SOLID">Solid</option>
+    <option value="DASHED">Dashed</option>
+    <option value="DOTTED">Dotted</option>
+  </select>
+  
+  <label for="strokeColor">Stroke Color:</label>
+  <input type="color" id="strokeColor" value="#000000">
+  
+  <label for="strokeWeight">Stroke Weight:</label>
+  <input type="number" id="strokeWeight" min="1" max="20" value="1">
+  
+  <button id="createConnector">Create Connector Between Selected</button>
+  
+  <script>
+  document.getElementById('createConnector').onclick = () => {
+    const strokeType = document.getElementById('strokeType').value;
+    const strokeColor = document.getElementById('strokeColor').value;
+    const strokeWeight = document.getElementById('strokeWeight').value;
+    
+    parent.postMessage({ 
+      pluginMessage: { 
+        type: 'create-connector',
+        strokeType,
+        strokeColor,
+        strokeWeight
+      }
+    }, '*')
+  }
+  </script>
