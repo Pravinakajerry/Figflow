@@ -1,6 +1,11 @@
 let connectorTemplate = null;
+let selectedColor = '#010101';  // default color
+let selectedNodes = [];
+let leftArrowEnabled = true;
+let rightArrowEnabled = true;
+let isDashedLine = false;
 
-figma.showUI(__html__, { width: 300, height: 300 });
+figma.showUI(__html__, { width: 420, height: 310 });
 
 function findConnectorOnPage() {
   return figma.currentPage.findOne(node => node.type === "CONNECTOR");
@@ -20,65 +25,73 @@ function wrapInFrame(element) {
   return frame;
 }
 
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  return { r, g, b };
-}
-
-figma.ui.onmessage = async (msg) => {
-  if (msg.type === 'create-connector') {
+function createConnector(startElement, endElement) {
+  if (!connectorTemplate) {
+    connectorTemplate = findConnectorOnPage();
     if (!connectorTemplate) {
-      connectorTemplate = findConnectorOnPage();
-      if (!connectorTemplate) {
-        figma.notify("No connector found on the page. Please create one first.");
-        return;
-      }
-    }
-
-    const selection = figma.currentPage.selection;
-    if (selection.length !== 2) {
-      figma.notify("Please select exactly two elements to connect.");
+      figma.notify("No connector found on the page. Please create one first.");
       return;
     }
+  }
 
-    let [startElement, endElement] = selection;
+  if (startElement.type !== "FRAME") {
+    startElement = wrapInFrame(startElement);
+  }
+  if (endElement.type !== "FRAME") {
+    endElement = wrapInFrame(endElement);
+  }
 
-    if (startElement.type !== "FRAME") {
-      startElement = wrapInFrame(startElement);
-    }
-    if (endElement.type !== "FRAME") {
-      endElement = wrapInFrame(endElement);
-    }
+  const newConnector = connectorTemplate.clone();
+  figma.currentPage.appendChild(newConnector);
 
-    const newConnector = connectorTemplate.clone();
-    figma.currentPage.appendChild(newConnector);
+  // Apply styles
+  newConnector.strokes = [{ type: 'SOLID', color: figma.util.rgb(selectedColor) }];
+  newConnector.strokeWeight = 2;
+  
+  if (isDashedLine) {
+    newConnector.dashPattern = [5, 5];
+  } else {
+    newConnector.dashPattern = [];
+  }
 
-    // Apply styles
-    newConnector.strokeWeight = parseInt(msg.strokeWeight);
-    newConnector.strokes = [{ type: 'SOLID', color: hexToRgb(msg.strokeColor) }];
-    
-    if (msg.strokeType === 'DASHED') {
-      newConnector.dashPattern = [5, 5];
-    } else if (msg.strokeType === 'DOTTED') {
-      newConnector.dashPattern = [1, 3];
+  // Set connector endpoints
+  newConnector.connectorStart = {
+    endpointNodeId: startElement.id,
+    magnet: "AUTO"
+  };
+
+  newConnector.connectorEnd = {
+    endpointNodeId: endElement.id,
+    magnet: "AUTO"
+  };
+
+  // Set arrow heads
+  newConnector.connectorStartStrokeCap = leftArrowEnabled ? 'ARROW_EQUILATERAL' : 'NONE';
+  newConnector.connectorEndStrokeCap = rightArrowEnabled ? 'ARROW_EQUILATERAL' : 'NONE';
+
+  figma.currentPage.selection = [newConnector];
+  figma.notify("Connector created successfully!");
+}
+
+figma.on('selectionchange', () => {
+  selectedNodes = figma.currentPage.selection;
+  figma.ui.postMessage({
+    type: 'selectionChanged',
+    count: selectedNodes.length
+  });
+});
+
+figma.ui.onmessage = msg => {
+  if (msg.type === 'style-changed') {
+    selectedColor = msg.color;
+    leftArrowEnabled = msg.leftArrow;
+    rightArrowEnabled = msg.rightArrow;
+    isDashedLine = msg.isDashed;
+  } else if (msg.type === 'connect-nodes') {
+    if (selectedNodes.length === 2) {
+      createConnector(selectedNodes[0], selectedNodes[1]);
     } else {
-      newConnector.dashPattern = [];
+      figma.notify("Please select exactly two elements to connect.");
     }
-
-    // Ensure the connector starts at the first selected element and ends at the second
-    newConnector.connectorStart = {
-      endpointNodeId: startElement.id,
-      magnet: "AUTO"
-    };
-
-    newConnector.connectorEnd = {
-      endpointNodeId: endElement.id,
-      magnet: "AUTO"
-    };
-
-    figma.currentPage.selection = [newConnector];
-    figma.notify("Styled connector created successfully!");
   }
 };
