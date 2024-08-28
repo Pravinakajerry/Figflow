@@ -26,6 +26,23 @@ function wrapInFrame(element) {
   return frame;
 }
 
+function applyConnectorStyle(connector) {
+  connector.strokes = [{ type: 'SOLID', color: figma.util.rgb(selectedColor) }];
+  connector.strokeWeight = 2;
+  
+  if (isDashedLine) {
+    connector.dashPattern = [5, 5];
+  } else {
+    connector.dashPattern = [];
+  }
+
+  connector.connectorStartStrokeCap = leftArrowEnabled ? 'ARROW_EQUILATERAL' : 'NONE';
+  connector.connectorEndStrokeCap = rightArrowEnabled ? 'ARROW_EQUILATERAL' : 'NONE';
+
+  // Use ELBOWED type for more flexibility
+  connector.connectorLineType = "ELBOWED";
+}
+
 function createConnector(element1, element2) {
   if (!connectorTemplate) {
     connectorTemplate = findConnectorOnPage();
@@ -49,32 +66,53 @@ function createConnector(element1, element2) {
   figma.currentPage.appendChild(newConnector);
 
   // Apply styles
-  newConnector.strokes = [{ type: 'SOLID', color: figma.util.rgb(selectedColor) }];
-  newConnector.strokeWeight = 2;
-  
-  if (isDashedLine) {
-    newConnector.dashPattern = [5, 5];
+  applyConnectorStyle(newConnector);
+
+  // Determine the best connection points
+  const startCenter = {
+    x: startElement.x + startElement.width / 2,
+    y: startElement.y + startElement.height / 2
+  };
+  const endCenter = {
+    x: endElement.x + endElement.width / 2,
+    y: endElement.y + endElement.height / 2
+  };
+
+  let startMagnet, endMagnet;
+
+  if (Math.abs(startCenter.x - endCenter.x) > Math.abs(startCenter.y - endCenter.y)) {
+    // Elements are more horizontal to each other
+    startMagnet = startCenter.x < endCenter.x ? "RIGHT" : "LEFT";
+    endMagnet = startCenter.x < endCenter.x ? "LEFT" : "RIGHT";
   } else {
-    newConnector.dashPattern = [];
+    // Elements are more vertical to each other
+    startMagnet = startCenter.y < endCenter.y ? "BOTTOM" : "TOP";
+    endMagnet = startCenter.y < endCenter.y ? "TOP" : "BOTTOM";
   }
 
   // Set connector endpoints
   newConnector.connectorStart = {
     endpointNodeId: startElement.id,
-    magnet: "AUTO"
+    magnet: startMagnet
   };
 
   newConnector.connectorEnd = {
     endpointNodeId: endElement.id,
-    magnet: "AUTO"
+    magnet: endMagnet
   };
-
-  // Set arrow heads
-  newConnector.connectorStartStrokeCap = leftArrowEnabled ? 'ARROW_EQUILATERAL' : 'NONE';
-  newConnector.connectorEndStrokeCap = rightArrowEnabled ? 'ARROW_EQUILATERAL' : 'NONE';
 
   figma.currentPage.selection = [newConnector];
   figma.notify("Connector created successfully!");
+}
+
+function updateSelectedConnectors() {
+  const selectedConnectors = figma.currentPage.selection.filter(node => node.type === "CONNECTOR");
+  if (selectedConnectors.length > 0) {
+    selectedConnectors.forEach(connector => {
+      applyConnectorStyle(connector);
+    });
+    figma.notify(`Updated ${selectedConnectors.length} connector(s)`);
+  }
 }
 
 figma.on('selectionchange', () => {
@@ -95,6 +133,7 @@ figma.ui.onmessage = msg => {
     leftArrowEnabled = msg.leftArrow;
     rightArrowEnabled = msg.rightArrow;
     isDashedLine = msg.isDashed;
+    updateSelectedConnectors();
   } else if (msg.type === 'connect-nodes') {
     if (selectedNodes.length === 2) {
       createConnector(selectedNodes[0], selectedNodes[1]);
